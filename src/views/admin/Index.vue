@@ -75,7 +75,20 @@ export default {
   </main>
 </template>
 
-<style scoped>
+<style>
+* {
+  font-family: "Heebo", sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+section {
+  margin-bottom: 5rem;
+}
 main {
   widows: 100%;
   height: 100vh;
