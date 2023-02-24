@@ -6,7 +6,7 @@ export default {
     return {
       orders: [],
       p_order: [],
-      details: true,
+      details: false,
       imgurl: import.meta.env.VITE_API_URL + "/getimage/",
 
     };
@@ -102,8 +102,8 @@ export default {
         </div>
         <div class="box">
           <h5>Rendelés adatai:</h5>
-          <div class="flex">
-            <b><p>Idő:</p></b> <p>{{ p_order.createdtime.split("T")[0] }}</p>
+          <div class="flex" v-if="this.p_order.createdtime">
+            <b><p>Idő:</p></b> <p>{{ this.p_order.createdtime.split("T")[0] }}</p>
           </div>
           <div class="flex">
             <b><p>Státusz:</p></b> <p></p>
