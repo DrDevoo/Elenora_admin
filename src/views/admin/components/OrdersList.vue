@@ -6,7 +6,9 @@ export default {
     return {
       orders: [],
       p_order: [],
-      details: false
+      details: true,
+      imgurl: import.meta.env.VITE_API_URL + "/getimage/",
+
     };
   },
   mounted() {
@@ -15,13 +17,13 @@ export default {
       .then((response) => (this.orders = response.data.r_orders));
   },
   methods: {
-    openitemdetails(orderid){
+    openitemdetails(orderid) {
       axios
-        .get(import.meta.env.VITE_API_URL + "/orders/getbyid" + orderid)
+        .get(import.meta.env.VITE_API_URL + "/orders/getbyid/" + orderid)
         .then((response) => (this.p_order = response.data));
-      this.details = true
-    }
-  }
+      this.details = true;
+    },
+  },
 };
 </script>
 
@@ -41,41 +43,145 @@ export default {
       </thead>
       <tbody>
         <tr v-for="item in orders" :key="item._id">
-          <td>{{ item.createdtime.split("T")[0] }} <br> {{ item.orderid }}</td>
+          <td>
+            {{ item.createdtime.split("T")[0] }} <br />
+            {{ item.orderid }}
+          </td>
           <td></td>
-          <td>{{ item.u_firstname  + " " + item.u_name}} <br> {{ item.u_email }}  </td>
-          <td><h6 class="itemname" v-for="(cartitem,index) in item.cart">{{ cartitem.name }}</h6></td>
-          <td>{{ item.cart.reduce(
-        (sum, cartitem) => sum + cartitem.price * cartitem.quantity,
-        0
-      ) }} Ft</td>
+          <td>
+            {{ item.u_firstname + " " + item.u_name }} <br />
+            {{ item.u_email }}
+          </td>
+          <td>
+            <h6 class="itemname" v-for="(cartitem, index) in item.cart">
+              {{ cartitem.name }}
+            </h6>
+          </td>
+          <td>
+            {{
+              item.cart.reduce(
+                (sum, cartitem) => sum + cartitem.price * cartitem.quantity,
+                0
+              )
+            }}
+            Ft
+          </td>
           <td></td>
-          <td @click="openitemdetails(item._id)"><ion-icon name="eye-outline"></ion-icon></td>
+          <td @click="openitemdetails(item._id)">
+            <ion-icon name="eye-outline"></ion-icon>
+          </td>
         </tr>
       </tbody>
     </table>
   </section>
-  <section class="details_box">
+  <section class="details_box" v-if="details">
     <div class="d_container">
-
+      <ion-icon @click="details = !details" style="font-size: 24pt" name="close-outline"></ion-icon>
+      <h3 style="text-align: center">Rendekés összesítő - <i>{{ this.p_order.orderid }}</i></h3>
+      <div class="customer_b">
+        <div class="box">
+          <h5>Megrendelő adatai:</h5>
+          <div class="flex">
+            <b><p>Teljes név:</p></b> <p>{{ this.p_order.u_firstname }} {{ this.p_order.u_name }}</p>
+          </div>
+          <div class="flex">
+            <b><p>E-mail:</p></b> <p>{{ this.p_order.u_email }}</p>
+          </div>
+          <div class="flex">
+            <b><p>Tel.:</p></b> <p>{{ this.p_order.u_tel }}</p>
+          </div>
+        </div>
+        <div class="box">
+          <h5>Szállítás, számlázás:</h5>
+          <div class="flex">
+            <b><p>helység:</p></b> <p>{{ this.p_order.u_postnumber }}, {{ this.p_order.u_city }}</p>
+          </div>
+          <div class="flex">
+            <b><p>Utca:</p></b> <p>{{ this.p_order.u_addresse }}</p>
+          </div>
+        </div>
+        <div class="box">
+          <h5>Rendelés adatai:</h5>
+          <div class="flex">
+            <b><p>Idő:</p></b> <p>{{ this.p_order.createdtime.split("T")[0] }}</p>
+          </div>
+          <div class="flex">
+            <b><p>Státusz:</p></b> <p></p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4 style="text-align: center;">Rendelt termékek</h4>
+        <div class="cartprod" v-for="(item, index) in this.p_order.cart" :key="index">
+          <img class="prodimg" :src="imgurl + item.img">
+          <div>
+            
+          </div>
+          <div>
+            <div class="flex">
+              <b><p>Neve:</p></b> <p>{{ item.name }}</p>
+            </div>
+            <div class="flex">
+              <b><p>Mennyiség:</p></b> <p>{{ item.quantity }}</p>
+            </div>
+            <div class="flex">
+              <b><p>Méret:</p></b> <p>{{ item.size }}</p>
+            </div>
+            <div class="flex">
+              <b><p>Ára:</p></b> <p>{{ item.price }} Ft</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-.details_box{
+.cartprod{
+  display: flex;
+  margin-bottom: 1rem;
+  gap:  0.5rem;
+}
+.customer_b{
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid gray;
+  border-radius: 10px;
+}
+.prodimg{
+  width: 90px;
+}
+.customer_b .box{
+  padding: 0.4rem;
+}
+.flex{
+  height: 30px;
+  display: flex;
+  gap: 0.5rem;
+}
+.box h5{
+  line-height: 0;
+}
+.details_box {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.details_box .d_container{
+.details_box .d_container {
+  box-shadow: 0px 0px 10px black;
   width: 70%;
+  height: 80vh;
   background-color: #ffffff;
   border-radius: 10px;
+  padding: 1rem;
 }
-.itemname{
+.itemname {
   line-height: 0px;
 }
 .listprod {

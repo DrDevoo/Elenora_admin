@@ -232,7 +232,7 @@ export default {
               <th>XXL</th>
               <th></th>
             </tr>
-            <tr v-for="(item, index) in this.p_prod.pearls" :key="index">
+            <tr c>
               <td style="text-align: center">
                 {{ item.name }}
               </td>
