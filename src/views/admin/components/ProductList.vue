@@ -37,8 +37,8 @@ export default {
       .then((response) => (this.products = response.data.products));
   },
   methods: {
-    more(id) {
-      (this.p_prod = null), (this.moreopen = true);
+    more(id) { 
+      (this.moreopen = true);
       axios
         .get(import.meta.env.VITE_API_URL + "/products/getbyid/" + id)
         .then((response) => (this.p_prod = response.data));
@@ -232,7 +232,7 @@ export default {
               <th>XXL</th>
               <th></th>
             </tr>
-            <tr c>
+            <tr v-for="(item, index) in this.p_prod.pearls" :key="index">
               <td style="text-align: center">
                 {{ item.name }}
               </td>
