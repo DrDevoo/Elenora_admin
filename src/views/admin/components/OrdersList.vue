@@ -103,7 +103,7 @@ export default {
         <div class="box">
           <h5>Rendelés adatai:</h5>
           <div class="flex">
-            <b><p>Idő:</p></b> <p>{{ this.p_order.createdtime.split("T")[0] }}</p>
+            <b><p>Idő:</p></b> <p>{{ p_order.createdtime.split("T")[0] }}</p>
           </div>
           <div class="flex">
             <b><p>Státusz:</p></b> <p></p>
