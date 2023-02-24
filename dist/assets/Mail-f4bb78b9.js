@@ -1,1 +1,0 @@
-import{H as t}from"./Header-afaaae18.js";import{o as a,c as s,e as _,F as o,a as e}from"./index-349eb41a.js";import"./_plugin-vue_export-helper-c27b6911.js";const l=e("h1",{class:"title"},"Hírlevél",-1),n=e("main",null,null,-1),r={data(){return{showAdd:!1}}},f=Object.assign(r,{__name:"Mail",setup(c){return(i,d)=>(a(),s(o,null,[_(t),l,n],64))}});export{f as default};
